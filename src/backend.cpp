@@ -237,6 +237,10 @@ void Backend::pressEquals() {
         m_resultValue = value;
         m_result = formatNumber(value);
         m_justEvaluated = true;
+        m_tape.removeAll(m_result);
+        m_tape.prepend(m_result);
+        while (m_tape.size() > 6)
+            m_tape.removeLast();
     }
     m_tokens.clear();
     m_entry.clear();
@@ -415,6 +419,16 @@ QString Backend::formatNumber(double value) {
     // every integer the 15-digit entry limit can produce exactly; larger
     // magnitudes fall back to scientific notation.
     return QString::number(value, 'g', 15);
+}
+
+void Backend::recallTape(int index) {
+    if (index < 0 || index >= m_tape.size())
+        return;
+    m_tokens.clear();
+    m_entry = m_tape.at(index);
+    m_errored = false;
+    clearEvaluation();
+    emit calculationChanged();
 }
 
 void Backend::copyResult() const {

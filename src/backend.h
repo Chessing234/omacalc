@@ -10,6 +10,7 @@ class Backend : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString expression READ expression NOTIFY calculationChanged)
     Q_PROPERTY(QString display READ display NOTIFY calculationChanged)
+    Q_PROPERTY(QStringList tape READ tape NOTIFY calculationChanged)
     Q_PROPERTY(bool darkMode READ darkMode WRITE setDarkMode NOTIFY darkModeChanged)
     Q_PROPERTY(qreal textScale READ textScale WRITE setTextScale NOTIFY textScaleChanged)
     Q_PROPERTY(QString themeBackground READ themeBackground NOTIFY themeColorsChanged)
@@ -22,6 +23,7 @@ public:
 
     QString expression() const;
     QString display() const;
+    QStringList tape() const { return m_tape; }
 
     bool darkMode() const { return m_darkMode; }
     void setDarkMode(bool darkMode);
@@ -37,6 +39,8 @@ public:
 
     Q_INVOKABLE void pressKey(const QString &key);
     Q_INVOKABLE void copyResult() const;
+    // Put a remembered result back on the line, newest first.
+    Q_INVOKABLE void recallTape(int index);
     Q_INVOKABLE void pasteNumber();
     // Launch size for the current text scale. Not a live binding: the window
     // reads it once, and a later scale change waits until the next launch.
@@ -70,6 +74,7 @@ private:
     QString m_entry;
     QString m_result;
     double m_resultValue = 0;
+    QStringList m_tape;
     QString m_evaluatedExpression;
     bool m_justEvaluated = false;
     bool m_errored = false;

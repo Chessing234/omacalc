@@ -110,6 +110,31 @@ ApplicationWindow {
             anchors.rightMargin: win.scaledSize(8)
             anchors.bottomMargin: win.scaledSize(24)
 
+            Row {
+                id: tapeRow
+                anchors.top: expressionText.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: win.scaledSize(4)
+                spacing: win.scaledSize(8)
+                visible: backend.tape.length > 0
+                Repeater {
+                    model: backend.tape
+                    Text {
+                        required property int index
+                        required property string modelData
+                        text: modelData
+                        color: win.mutedColor
+                        font.family: "iA Writer Mono S"
+                        font.pixelSize: win.scaledSize(13)
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: backend.recallTape(index)
+                        }
+                    }
+                }
+            }
+
             Text {
                 id: expressionText
                 anchors.top: parent.top

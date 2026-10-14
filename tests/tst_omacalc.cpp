@@ -388,6 +388,19 @@ private slots:
         QVERIFY(!withInvalidColor.darkMode());
     }
 
+    void remembersRecentResults() {
+        Backend calculator;
+        press(calculator, "2 + 2 =");
+        QCOMPARE(calculator.tape(), QStringList{QStringLiteral("4")});
+        press(calculator, "3 * 3 =");
+        QCOMPARE(calculator.tape(), (QStringList{QStringLiteral("9"), QStringLiteral("4")}));
+        calculator.recallTape(1);
+        QCOMPARE(calculator.display(), QStringLiteral("4"));
+        press(calculator, "+ 1 =");
+        QCOMPARE(calculator.display(), QStringLiteral("5"));
+        QCOMPARE(calculator.tape().first(), QStringLiteral("5"));
+    }
+
 private:
     QTemporaryDir m_settingsDirectory;
 };
