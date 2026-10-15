@@ -332,6 +332,15 @@ private slots:
         QVERIFY(theme.textScale() <= 3.0);
     }
 
+    void groupsThousandsOnTheDisplay() {
+        Backend calculator;
+        press(calculator, "5 0 0 * 4 =");
+        QCOMPARE(calculator.display(), QStringLiteral("2,000"));
+        QCOMPARE(calculator.expression(), QStringLiteral("500 × 4"));
+        calculator.copyResult();
+        QCOMPARE(QGuiApplication::clipboard()->text(), QStringLiteral("2000"));
+    }
+
     void formatsNumbers() {
         QCOMPARE(Backend::formatNumber(133), QStringLiteral("133"));
         QCOMPARE(Backend::formatNumber(0.1 + 0.2), QStringLiteral("0.3"));
