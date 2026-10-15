@@ -177,7 +177,7 @@ private slots:
 
         // Integers within the 15-digit entry limit survive exactly.
         press(calculator, "clear 9 9 9 9 9 9 9 9 9 9 9 9 9 9 =");
-        QCOMPARE(calculator.display(), QStringLiteral("99999999999999"));
+        QCOMPARE(calculator.display(), QStringLiteral("99,999,999,999,999"));
     }
 
     void capsEntryAtFifteenDigits() {
